@@ -8,6 +8,7 @@ from email.message import EmailMessage
 import os
 import undetected_chromedriver as uc
 
+
 # ==== Credentials from GitHub Secrets ====
 user_email = os.getenv("USER_EMAIL")
 user_pass = os.getenv("USER_PASS")
@@ -39,7 +40,8 @@ options.headless = True
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 
-driver = uc.Chrome(options=options)
+# ✅ Force version 135 to match GitHub's Chrome version
+driver = uc.Chrome(options=options, version_main=135)
 
 try:
     driver.get("https://vptdashboard.com/VptLogin/")
