@@ -2,7 +2,7 @@ name: VPT Punch Out
 
 on:
   schedule:
-    - cron: '0 15 * * 1-5'  # 9:30 PM IST = 16:00 UTC
+    - cron: '30 14 * * 1-5'  # ✅ 8:00 PM IST = 14:30 UTC
   workflow_dispatch:
 
 jobs:
