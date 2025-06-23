@@ -41,7 +41,7 @@ options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 
 # ✅ Force version 135 to match GitHub's Chrome version
-driver = uc.Chrome(options=options, version_main=135)
+driver = uc.Chrome(options=options)
 
 try:
     driver.get("https://vptdashboard.com/VptLogin/")
