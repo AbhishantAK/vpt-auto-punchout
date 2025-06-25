@@ -6,8 +6,9 @@ import time
 import smtplib
 from email.message import EmailMessage
 import os
+import subprocess
+import re
 import undetected_chromedriver as uc
-
 
 # ==== Credentials from GitHub Secrets ====
 user_email = os.getenv("USER_EMAIL")
@@ -34,14 +35,27 @@ Your punch-out was successful on VPT Dashboard at {datetime.now().strftime("%Y-%
     except Exception as e:
         print("❌ Failed to send email:", str(e))
 
+# ==== Detect Chrome Version ====
+def get_chrome_major_version():
+    try:
+        output = subprocess.check_output(['google-chrome', '--version']).decode()
+        version_match = re.search(r"(\d+)\.", output)
+        return int(version_match.group(1)) if version_match else None
+    except Exception as e:
+        print("❌ Failed to get Chrome version:", e)
+        return None
+
+chrome_major_version = get_chrome_major_version()
+print(f"🧭 Detected Chrome version: {chrome_major_version}")
+
 # ==== Headless Chrome Driver ====
 options = uc.ChromeOptions()
 options.headless = True
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 
-# ✅ Force version 135 to match GitHub's Chrome version
-driver = uc.Chrome(options=options)
+# ✅ Launch driver with detected version
+driver = uc.Chrome(options=options, version_main=chrome_major_version)
 
 try:
     driver.get("https://vptdashboard.com/VptLogin/")
